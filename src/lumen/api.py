@@ -45,6 +45,7 @@ def get_store():
 class CreateJob(BaseModel):
     files: list[str] = Field(min_length=1, max_length=MAX_FILES)
     one_bracket: bool = False  # the person says the upload is one room: skip grouping
+    off: list[Literal["deghost", "window", "lens", "tilt"]] = Field(default_factory=list, max_length=4)
 
 
 @app.middleware("http")
@@ -75,7 +76,7 @@ def health():
 
 @app.post("/api/jobs")
 def new_job(body: CreateJob):
-    job, uploads = create_job(get_store(), body.files, body.one_bracket)
+    job, uploads = create_job(get_store(), body.files, body.one_bracket, body.off)
     return {"job": job, "uploads": uploads}
 
 

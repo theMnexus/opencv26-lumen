@@ -132,6 +132,9 @@ function safeNames(files) {
   });
 }
 
+// Optional steps the person switched off (agent.OPTIONAL_STEPS); merge has no switch to turn off.
+const stepsOff = () => [...document.querySelectorAll(".options input[data-step]")].filter((i) => !i.checked).map((i) => i.dataset.step);
+
 async function run(fileList) {
   const all = [...fileList];
   const files = all.filter((f) => IMAGE.test(f.name));
@@ -148,7 +151,7 @@ async function run(fileList) {
     setJob("uploading", `${files.length} photos${heic ? ` (${heic} HEIC skipped)` : ""}`, true);
     const { job, uploads } = await api("/api/jobs", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ files: names, one_bracket: $("one-bracket").checked }),
+      body: JSON.stringify({ files: names, one_bracket: $("one-bracket").checked, off: stepsOff() }),
     });
     let sent = 0;
     for (const [i, file] of files.entries()) {

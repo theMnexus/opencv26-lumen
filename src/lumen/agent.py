@@ -60,10 +60,17 @@ class State:
     status: str = "running"  # running | ok | needs_review
     reason: str = ""
     trace: tuple[Step, ...] = field(default_factory=tuple)
+    off: frozenset[str] = frozenset()  # steps the person turned off at upload: OPTIONAL_STEPS
 
 
+OPTIONAL_STEPS = ("deghost", "window", "lens", "tilt")  # merge itself is the product, so it cannot be turned off
 Action = tuple[State, dict, dict, str]  # new state, params, result, decision
 Rule = Callable[[State, dict], tuple[str, str, Callable[[], Action]] | None]
+
+
+def _turned_off(s: State, key: str) -> Action:
+    """The step is still written to the trace, so the record shows the person turned it off."""
+    return replace(s, tried=s.tried | {key}), {}, {"note": "turned off at upload"}, "off"
 
 
 # ---------- observe ----------
@@ -130,9 +137,11 @@ def need_merge(s: State, obs: dict):
     if s.alignment is None or s.merged is not None:
         return None
 
+    deghost = "deghost" not in s.off
+
     def act() -> Action:
-        m = merge_set(s.alignment.aligned, s.alignment.reference_index, "mertens")
-        return replace(s, merged=m, image=m.image), {"engine": "mertens", "deghost": True}, \
+        m = merge_set(s.alignment.aligned, s.alignment.reference_index, "mertens", deghost=deghost)
+        return replace(s, merged=m, image=m.image), {"engine": "mertens", "deghost": deghost}, \
             {"ghost_ratio": m.ghost_ratio, "clip_ratio": m.clip_ratio, "mef_ssim": m.mef_ssim}, "accept"
     return "need_merge", "merge_set", act
 
@@ -150,6 +159,8 @@ def too_much_motion(s: State, obs: dict):
 def blown_window(s: State, obs: dict):
     if s.image is None or "window" in s.tried or obs["clip_ratio"] < WINDOW_TRIGGER:
         return None
+    if "window" in s.off:
+        return "blown_window", "pull_windows", lambda: _turned_off(s, "window")
 
     def act() -> Action:
         al = s.alignment
@@ -184,6 +195,8 @@ def debevec_fallback(s: State, obs: dict):
 def lens(s: State, obs: dict):
     if s.image is None or "lens" in s.tried:
         return None
+    if "lens" in s.off:
+        return "lens", "correct_lens", lambda: _turned_off(s, "lens")
 
     def act() -> Action:
         r = correct_lens(s.image)
@@ -197,6 +210,8 @@ def lens(s: State, obs: dict):
 def tilt(s: State, obs: dict):
     if s.image is None or "tilt" in s.tried:
         return None
+    if "tilt" in s.off:
+        return "tilt", "straighten", lambda: _turned_off(s, "tilt")
 
     def act() -> Action:
         r = straighten(s.image)
@@ -226,8 +241,12 @@ RULES: tuple[Rule, ...] = (need_alignment, bad_frame, need_merge, too_much_motio
 
 # ---------- loop ----------
 
-def run_set(frames: list[Frame]) -> State:
-    state = State(frames=tuple(frames))
+def run_set(frames: list[Frame], off: frozenset[str] | set[str] = frozenset()) -> State:
+    """off: optional steps (OPTIONAL_STEPS) the person turned off."""
+    unknown = set(off) - set(OPTIONAL_STEPS)
+    if unknown:
+        raise ValueError(f"cannot turn off {sorted(unknown)}; optional steps are {OPTIONAL_STEPS}")
+    state = State(frames=tuple(frames), off=frozenset(off))
     if len(frames) < 2:
         return replace(state, status="needs_review", reason="single frame, not a bracket")
     max_steps = FIXED_STEPS + STEPS_PER_FRAME * len(frames)

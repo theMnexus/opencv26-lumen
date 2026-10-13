@@ -124,3 +124,20 @@ def test_one_bracket_skips_grouping(client, photos):
 def test_one_bracket_must_be_a_boolean(client, photos):
     res = client.post("/api/jobs", json={"files": ["a.jpg"], "one_bracket": "maybe"})
     assert res.status_code == 422
+
+
+def test_steps_turned_off_at_upload_reach_the_trace(client, photos):
+    room = photos[:3]
+    created = client.post("/api/jobs", json={"files": [n for n, _ in room], "one_bracket": True,
+                                             "off": ["lens", "tilt"]}).json()
+    assert created["job"]["off"] == ["lens", "tilt"]
+    for name, data in room:
+        client.put(created["uploads"][name]["url"], content=data)
+    job = client.post(f"/api/jobs/{created['job']['id']}/start").json()
+    decisions = {s["tool"]: s["decision"] for s in job["sets"][0]["steps"]}
+    assert decisions["correct_lens"] == "off" and decisions["straighten"] == "off"
+
+
+def test_merge_cannot_be_turned_off(client):
+    res = client.post("/api/jobs", json={"files": ["a.jpg"], "off": ["merge"]})
+    assert res.status_code == 422

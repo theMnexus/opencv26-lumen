@@ -21,7 +21,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-from lumen.agent import link_dicts, run_set, trace_dict
+from lumen.agent import OPTIONAL_STEPS, link_dicts, run_set, trace_dict
 from lumen.group import group_frames, one_bracket
 from lumen.io import load_frame
 from lumen.store import MAX_UPLOAD_BYTES, LocalStore, S3Store
@@ -74,8 +74,12 @@ def _save_job(store: Store, job: dict) -> dict:
     return job
 
 
-def create_job(store: Store, files: list[str], one_set: bool = False) -> tuple[dict, dict]:
-    """Returns the job and an upload target per file. one_set: the person says it is one bracket."""
+def create_job(store: Store, files: list[str], one_set: bool = False, off: list[str] | None = None) -> tuple[dict, dict]:
+    """Returns the job and an upload target per file. one_set: the person says it is one bracket.
+    off: optional steps (agent.OPTIONAL_STEPS) the person turned off for every room."""
+    off = sorted(set(off or []))
+    if set(off) - set(OPTIONAL_STEPS):
+        raise JobError(f"only these steps can be turned off: {', '.join(OPTIONAL_STEPS)}")
     if not 1 <= len(files) <= MAX_FILES:
         raise JobError(f"send 1 to {MAX_FILES} files")
     bad = [f for f in files if not FILE_NAME.match(f)]
@@ -84,7 +88,7 @@ def create_job(store: Store, files: list[str], one_set: bool = False) -> tuple[d
     if len(set(files)) != len(files):
         raise JobError("file names must be unique")
     job = {"id": uuid.uuid4().hex, "status": "uploading", "created_at": _now(), "files": files,
-           "one_bracket": bool(one_set), "sets": [], "grouping": [], "error": None, "seconds": None}
+           "one_bracket": bool(one_set), "off": off, "sets": [], "grouping": [], "error": None, "seconds": None}
     _save_job(store, job)
     return job, {name: store.upload_target(job["id"], name) for name in files}
 
@@ -156,7 +160,7 @@ def _rerun_without(store: Store, job_id: str, set_entry: dict, frame: str) -> di
             path = Path(tmp) / name
             path.write_bytes(store.get(_key(job_id, "in", name)))
             paths.append(path)
-        state = run_set(load_set(paths))
+        state = run_set(load_set(paths), frozenset(load_job(store, job_id).get("off", [])))
     return _save_set(store, job_id, set_entry["id"], state)
 
 
@@ -243,7 +247,7 @@ def run_job(store: Store, job_id: str) -> dict:
             grouping = one_bracket(thumbs) if job.get("one_bracket") else group_frames(thumbs)
             sets = []
             for i, ids in enumerate(grouping.sets):
-                state = run_set(load_set([paths[k] for k in ids]))
+                state = run_set(load_set([paths[k] for k in ids]), frozenset(job.get("off", [])))
                 sets.append(_save_set(store, job_id, f"set{i + 1:02d}", state))
                 del state
         done = {**job, "status": "done", "sets": sets, "grouping": link_dicts(grouping),

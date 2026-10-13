@@ -201,3 +201,20 @@ def test_folder_groups_then_runs_each_set(dataset):
     result = run_folder(frames)
     assert len(result.sets) == 3 and all(s.status == "ok" for s in result.sets)
     assert sum(not link["joined"] for link in result.grouping) == 2
+
+
+def test_turned_off_steps_are_traced_and_not_run(dataset):
+    """A person can turn optional steps off at upload; the trace still says so."""
+    _, sets = dataset
+    state = run_set(sets[0], off={"lens", "tilt", "deghost", "window"})
+    steps = {s.tool: s for s in state.trace}
+    assert state.status == "ok"
+    assert steps["correct_lens"].decision == "off" and steps["straighten"].decision == "off"
+    assert steps["merge_set"].params["deghost"] is False
+    assert state.image is state.merged.image  # with every optional step off, nothing changes the merge
+
+
+def test_unknown_step_cannot_be_turned_off(dataset):
+    _, sets = dataset
+    with pytest.raises(ValueError):
+        run_set(sets[0], off={"merge"})

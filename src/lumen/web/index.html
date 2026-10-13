@@ -63,16 +63,58 @@
 
       <section class="intake" id="intake" aria-labelledby="intake-title">
         <h2 id="intake-title">Process your brackets</h2>
-        <label class="drop" id="drop">
-          <input id="picker" type="file" accept=".jpg,.jpeg,.png,.tif,.tiff" multiple>
-          <span class="drop-big">Drop photos here, or click to choose</span>
-          <span class="drop-small">JPG, PNG or TIFF straight from the camera, so the EXIF time and exposure are kept. Up to 60 photos, 40&nbsp;MB each; several rooms at once is fine.</span>
-        </label>
-        <div class="intake-options">
-          <button type="button" id="folder-btn" class="link-btn">Choose a whole folder</button>
-          <label class="one-bracket"><input type="checkbox" id="one-bracket"> All photos are one room (skip grouping)</label>
-          <a class="link-btn" href="https://github.com/theMnexus/opencv26-lumen/releases/latest/download/lumen-samples.zip" rel="noopener">Download test brackets (44&nbsp;MB, CC&nbsp;BY&nbsp;4.0)</a>
+        <div class="intake-grid">
+          <label class="drop" id="drop">
+            <input id="picker" type="file" accept=".jpg,.jpeg,.png,.tif,.tiff" multiple>
+            <svg class="drop-icon" viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><path d="M24 31V9m0 0-8 8m8-8 8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 29v7a4 4 0 0 0 4 4h24a4 4 0 0 0 4-4v-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+            <span class="drop-big">Drop photos here</span>
+            <span class="drop-small">JPG, PNG or TIFF straight from the camera, so the EXIF time and exposure are kept. Up to 60 photos, 40&nbsp;MB each; several rooms at once is fine.</span>
+            <span class="drop-actions">
+              <span class="btn btn-small" aria-hidden="true">Choose photos</span>
+              <button type="button" id="folder-btn" class="btn btn-small btn-quiet">Choose a folder</button>
+            </span>
+          </label>
+
+          <fieldset class="options">
+            <legend>Processing options</legend>
+            <label class="option">
+              <input type="checkbox" role="switch" id="one-bracket" aria-describedby="one-bracket-help">
+              <span class="switch" aria-hidden="true"></span>
+              <span class="option-text"><span class="option-title">All photos are one room</span><span class="option-help" id="one-bracket-help">Skip grouping. Use it for brackets shot minutes apart.</span></span>
+            </label>
+            <label class="option">
+              <input type="checkbox" role="switch" id="opt-deghost" checked data-step="deghost" aria-describedby="opt-deghost-help">
+              <span class="switch" aria-hidden="true"></span>
+              <span class="option-text"><span class="option-title">Remove moving people and objects</span><span class="option-help" id="opt-deghost-help">Anything that moved is taken from one frame only.</span></span>
+            </label>
+            <label class="option">
+              <input type="checkbox" role="switch" id="opt-window" checked data-step="window" aria-describedby="opt-window-help">
+              <span class="switch" aria-hidden="true"></span>
+              <span class="option-text"><span class="option-title">Fill blown windows</span><span class="option-help" id="opt-window-help">Window detail from the darker frames; refused if it adds edges.</span></span>
+            </label>
+            <label class="option">
+              <input type="checkbox" role="switch" id="opt-lens" checked data-step="lens" aria-describedby="opt-lens-help">
+              <span class="switch" aria-hidden="true"></span>
+              <span class="option-text"><span class="option-title">Correct lens distortion</span><span class="option-help" id="opt-lens-help">Fits barrel distortion k1 so long edges become straight.</span></span>
+            </label>
+            <label class="option">
+              <input type="checkbox" role="switch" id="opt-tilt" checked data-step="tilt" aria-describedby="opt-tilt-help">
+              <span class="switch" aria-hidden="true"></span>
+              <span class="option-text"><span class="option-title">Straighten verticals</span><span class="option-help" id="opt-tilt-help">Stands walls and window frames up from their vanishing point.</span></span>
+            </label>
+            <label class="option is-locked">
+              <input type="checkbox" role="switch" id="opt-merge" checked disabled aria-describedby="opt-merge-help">
+              <span class="switch" aria-hidden="true"></span>
+              <span class="option-text"><span class="option-title">Merge the exposures</span><span class="option-help" id="opt-merge-help">Always on: merging the bracket is what makes the room image.</span></span>
+            </label>
+            <p class="options-note">A step you turn off is still listed in the agent's revisions, marked “off”.</p>
+          </fieldset>
         </div>
+
+        <p class="sample-row">
+          <a class="sample-link" href="https://github.com/theMnexus/opencv26-lumen/releases/latest/download/lumen-samples.zip" rel="noopener"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Download test brackets</a>
+          <span class="muted">44&nbsp;MB of real Empa and Cambridge brackets, CC&nbsp;BY&nbsp;4.0. For a Cambridge folder, turn on “All photos are one room”.</span>
+        </p>
 
         <div class="table-wrap">
           <table class="drawing-index">
