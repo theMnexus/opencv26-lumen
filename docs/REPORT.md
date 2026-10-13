@@ -1,6 +1,6 @@
 # theMnexus Lumen — Technical Report
 
-OpenCV AI Competition 2026 · team **theMnexus** · code: this repository · numbers: [`RESULTS.md`](RESULTS.md)
+OpenCV AI Competition 2026 · team **theMnexus** · code: this repository · numbers: [`RESULTS.md`](RESULTS.md) · video: https://youtu.be/p_b2utDpR-c
 
 ## 1. Problem
 
@@ -178,7 +178,7 @@ Trace excerpt (`docs/traces/phone-stranger-frame.json`, bright frame taken from 
 |---|---|
 | Output changes later steps | residual → drop/swap; clip → window → revert (no clipping gain, or seams) → Debevec; keystone → person |
 | Success rate | 192/192 on normal and injected-fault cases across both profiles (§6) |
-| Error handling | at most 10 steps per set; any exception ends the job `failed` with a message; bad uploads rejected with 400 |
+| Error handling | at most 10 + 2 × frames steps per set (`FIXED_STEPS`, `STEPS_PER_FRAME`); any exception ends the job `failed` with a message; bad uploads rejected with 400 |
 | Observability | per-step JSON trace, job timing, CloudWatch logs |
-| Human control | `needs_review` with a reason; in the web UI a person accepts, rejects, or drops a frame and re-runs, and that decision becomes the first trace step (`person_review`); deterministic rules, so the same input gives the same trace |
+| Human control | `needs_review` with a reason; in the web UI a person accepts, rejects, or drops a frame and re-runs, and that decision becomes the first trace step (`person_review`); at upload a person can switch off ghost removal, window fill, lens or tilt (never the merge), and a switched-off step is still traced as `off`; deterministic rules, so the same input gives the same trace |
 | Other agents | `lumen-mcp` exposes the same OpenCV 5 tools over MCP (group, align, merge, lens, tilt, QC, run_agent), with paths locked to one root folder |

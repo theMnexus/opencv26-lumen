@@ -6,6 +6,7 @@ Entry by team **theMnexus** for the OpenCV AI Competition 2026.
 
 - **Live web app:** https://wdjobi4cdy2ucu7nw2y77ixkme0cczvb.lambda-url.ap-southeast-2.on.aws/
 - **Test data:** [lumen-samples.zip](https://github.com/theMnexus/opencv26-lumen/releases/latest/download/lumen-samples.zip) (44 MB, real Empa and Cambridge brackets, CC BY 4.0), also on the [Releases](https://github.com/theMnexus/opencv26-lumen/releases) page
+- **Video (4:24):** https://youtu.be/p_b2utDpR-c
 
 People who sell or rent a home often shoot it themselves. Interiors come out with dark corners and white windows, leaning walls, bent lines from wide lenses, and ghosts when someone walks through a bracket. Lumen takes a folder of bracketed photos and returns one clean image per room — and a trace that says what it saw, what it did, and when it stopped to ask a person.
 
@@ -43,6 +44,8 @@ Example traces where an OpenCV result changes the next step: [`docs/traces/`](do
 ### Human review
 
 When the agent stops (`needs_review`), the web UI shows the reason and three actions: **Accept agent's image**, **Reject**, or **Drop frame & re-run**. The choice is stored in the job and becomes the first step of the trace (`person_review`), so the record shows who decided what.
+
+Before uploading, a person can also switch off ghost removal, window fill, lens correction or straightening for the whole job; the merge always runs. A switched-off step still appears in the trace with the decision `off`, so the record shows what was not done and why.
 
 ![A room the agent stopped on, with the review actions](docs/screenshots/ui-review.png)
 
