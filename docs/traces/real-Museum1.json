@@ -1,0 +1,154 @@
+{
+  "status": "ok",
+  "reason": "",
+  "frames": [
+    "DSC_0420.jpg",
+    "DSC_0421.jpg",
+    "DSC_0422.jpg",
+    "DSC_0419.jpg",
+    "DSC_0423.jpg",
+    "DSC_0424.jpg",
+    "DSC_0425.jpg"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "rule": "need_alignment",
+      "tool": "align_set",
+      "observe": {
+        "frames": 7
+      },
+      "params": {
+        "reference": 3
+      },
+      "result": {
+        "worst_residual_px": 1.6687,
+        "frames": [
+          {
+            "frame": 0,
+            "method": "ecc",
+            "residual_px": 1.2835,
+            "note": ""
+          },
+          {
+            "frame": 1,
+            "method": "ecc",
+            "residual_px": 1.3393,
+            "note": ""
+          },
+          {
+            "frame": 2,
+            "method": "ecc",
+            "residual_px": 1.3618,
+            "note": ""
+          },
+          {
+            "frame": 3,
+            "method": "reference",
+            "residual_px": 0.0,
+            "note": ""
+          },
+          {
+            "frame": 4,
+            "method": "ecc",
+            "residual_px": 1.215,
+            "note": ""
+          },
+          {
+            "frame": 5,
+            "method": "ecc",
+            "residual_px": 1.3223,
+            "note": ""
+          },
+          {
+            "frame": 6,
+            "method": "ecc",
+            "residual_px": 1.6687,
+            "note": ""
+          }
+        ]
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 2,
+      "rule": "need_merge",
+      "tool": "merge_set",
+      "observe": {
+        "frames": 7,
+        "worst_residual_px": 1.6687,
+        "residual_limit_px": 5.2153
+      },
+      "params": {
+        "engine": "mertens",
+        "deghost": true
+      },
+      "result": {
+        "ghost_ratio": 0.0,
+        "clip_ratio": 0.0,
+        "mef_ssim": 0.9841
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 3,
+      "rule": "lens",
+      "tool": "correct_lens",
+      "observe": {
+        "frames": 7,
+        "worst_residual_px": 1.6687,
+        "residual_limit_px": 5.2153,
+        "ghost_ratio": 0.0,
+        "clip_ratio": 0.0
+      },
+      "params": {
+        "focal_px": 3899.0
+      },
+      "result": {
+        "k1": 0.0,
+        "curvature_before_px": null,
+        "curvature_after_px": null,
+        "pieces": 8,
+        "note": "only 8 straight-line pieces (< 12): not corrected"
+      },
+      "decision": "skip"
+    },
+    {
+      "step": 4,
+      "rule": "tilt",
+      "tool": "straighten",
+      "observe": {
+        "frames": 7,
+        "worst_residual_px": 1.6687,
+        "residual_limit_px": 5.2153,
+        "ghost_ratio": 0.0,
+        "clip_ratio": 0.0
+      },
+      "params": {},
+      "result": {
+        "roll_deg": -0.3066,
+        "keystone": 0.0097,
+        "tilt_before_deg": 0.5209,
+        "tilt_after_deg": 0.1312,
+        "zoom": 1.0112,
+        "note": ""
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 5,
+      "rule": "finished",
+      "tool": "none",
+      "observe": {
+        "frames": 7,
+        "worst_residual_px": 1.6687,
+        "residual_limit_px": 5.2153,
+        "ghost_ratio": 0.0,
+        "clip_ratio": 0.0
+      },
+      "params": {},
+      "result": {},
+      "decision": "done"
+    }
+  ]
+}

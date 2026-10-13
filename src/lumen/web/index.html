@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumen — bracket photos to one true image</title>
+  <meta name="description" content="An OpenCV 5 agent that groups, aligns, merges and straightens real-estate bracket photos, and shows every measurement.">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="index">
+    <a class="brand" href="#process" aria-label="Lumen, process photos">
+      <span class="brand-name">Lumen</span><span class="brand-by">by theMnexus</span>
+    </a>
+    <nav class="sheets" aria-label="Sheets">
+      <a class="sheet-tab" href="#process" data-view="process"><span class="sheet-no">A-100</span>Process photos</a>
+      <a class="sheet-tab" href="#report" data-view="report"><span class="sheet-no">A-200</span>Report</a>
+      <a class="sheet-tab sheet-out" href="https://github.com/theMnexus/opencv26-lumen" rel="noopener"><span class="sheet-no">src</span>Code<svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="view" id="view-process">
+      <section class="cover" aria-labelledby="cover-title">
+        <figure class="elevation" id="elevation">
+          <img class="elevation-img" src="/static/img/real-FORTH3-after.webp" width="1600" height="1067" fetchpriority="high"
+               alt="Lumen's result on a real room: the interior and the garden outside the window in one image, window frames vertical">
+          <svg class="plumb" id="plumb" aria-hidden="true"></svg>
+          <p class="callout" id="callout" hidden>Verticals, measured on <b id="cover-lines">–</b> edges<br><b id="cover-tilt" class="callout-num">–</b></p>
+          <figcaption class="elevation-cap">Empa HDR database, scene FORTH3, CC&nbsp;BY&nbsp;4.0. Blue lines: vertical edges OpenCV found in this result.</figcaption>
+        </figure>
+
+        <div class="cover-text">
+          <h1 id="cover-title">Seven exposures in. One true room out.</h1>
+          <p class="lede">Lumen merges each room's brackets, takes the window from the dark frames and stands the walls up. OpenCV&nbsp;5 only: nothing is painted in or out.</p>
+          <ol class="wedge" aria-label="Five of the seven exposures of this room">
+            <li><img src="/static/img/hero-ev0.webp" width="360" height="240" alt="Exposure −3 EV: only the window shows"><span>−3</span></li>
+            <li><img src="/static/img/hero-ev1.webp" width="360" height="240" alt="Exposure −1 EV"><span>−1</span></li>
+            <li><img src="/static/img/hero-ev2.webp" width="360" height="240" alt="Exposure 0 EV"><span>0</span></li>
+            <li><img src="/static/img/hero-ev3.webp" width="360" height="240" alt="Exposure +1 EV"><span>+1</span></li>
+            <li><img src="/static/img/hero-ev4.webp" width="360" height="240" alt="Exposure +3 EV: the room shows, the window is white"><span>+3&nbsp;EV</span></li>
+          </ol>
+          <p class="cover-actions">
+            <a class="btn" href="#intake">Upload your brackets</a>
+            <a class="link-btn" href="#report">See every result and number</a>
+          </p>
+        </div>
+
+        <dl class="title-block" aria-label="About this sheet">
+          <div><dt>Project</dt><dd>Lumen, by theMnexus</dd></div>
+          <div><dt>Sheet</dt><dd>A-100, process photos</dd></div>
+          <div><dt>Drawn by</dt><dd>OpenCV 5.0, no generative model</dd></div>
+          <div><dt>Checked by</dt><dd>the agent, then you</dd></div>
+          <div><dt>Runs on</dt><dd>AWS Lambda arm64 + S3</dd></div>
+          <div><dt>Issued</dt><dd id="cover-date">–</dd></div>
+        </dl>
+      </section>
+
+      <section class="intake" id="intake" aria-labelledby="intake-title">
+        <h2 id="intake-title">Process your brackets</h2>
+        <label class="drop" id="drop">
+          <input id="picker" type="file" accept=".jpg,.jpeg,.png,.tif,.tiff" multiple>
+          <span class="drop-big">Drop photos here, or click to choose</span>
+          <span class="drop-small">JPG, PNG or TIFF straight from the camera, so the EXIF time and exposure are kept. Up to 60 photos, 40&nbsp;MB each; several rooms at once is fine.</span>
+        </label>
+        <div class="intake-options">
+          <button type="button" id="folder-btn" class="link-btn">Choose a whole folder</button>
+          <label class="one-bracket"><input type="checkbox" id="one-bracket"> All photos are one room (skip grouping)</label>
+          <a class="link-btn" href="https://github.com/theMnexus/opencv26-lumen/releases/latest/download/lumen-samples.zip" rel="noopener">Download test brackets (44&nbsp;MB, CC&nbsp;BY&nbsp;4.0)</a>
+        </div>
+
+        <div class="table-wrap">
+          <table class="drawing-index">
+            <caption>What happens to each room, in order, and where it is measured</caption>
+            <thead><tr><th scope="col">Step</th><th scope="col">What OpenCV does</th><th scope="col">Evidence</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Group</th><td>Splits the upload into rooms by capture time, exposure and scene match</td><td><a href="#report-synthetic">Synthetic sets</a></td></tr>
+              <tr><th scope="row">Align</th><td>Warps every frame onto the middle one; the residual is measured per tile</td><td><a href="#report-synthetic">Alignment error</a></td></tr>
+              <tr><th scope="row">Merge</th><td>Exposure fusion; anything that moved is taken from one frame only</td><td><a href="#report-ghost">Real motion</a></td></tr>
+              <tr><th scope="row">Window</th><td>Fills a blown window from the darker frames; refused if it adds edges no frame recorded</td><td><a href="#report-rooms">Real rooms</a></td></tr>
+              <tr><th scope="row">Lens</th><td>Fits barrel distortion k1 so long edges become straight</td><td><a href="#report-notes">Limits</a></td></tr>
+              <tr><th scope="row">Tilt</th><td>Stands the verticals up from their vanishing point</td><td><a href="#report-rooms">Real rooms</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="job" id="job" hidden aria-live="polite">
+        <div class="job-line">
+          <span class="job-status" id="job-status">uploading</span>
+          <span class="job-detail" id="job-detail"></span>
+        </div>
+        <div class="bar" aria-hidden="true"><div class="bar-fill" id="bar-fill"></div></div>
+        <p class="job-error" id="job-error" hidden></p>
+      </section>
+
+      <section class="results" id="results" aria-label="Results"></section>
+
+      <details class="grouping" id="grouping" hidden>
+        <summary>How the photos were grouped</summary>
+        <ol id="grouping-list"></ol>
+      </details>
+    </div>
+
+    <div class="view" id="view-report" hidden>
+      <section class="report-head" aria-labelledby="report-title">
+        <h1 id="report-title">Report</h1>
+        <p class="lede">Real brackets from two public datasets, run through the same code as the live service, then the numbers. Every number was measured, and the script that measured it is in the repository's <code>bench/</code> folder. Drag the cut line on any image to compare. The same brackets are in the <a href="https://github.com/theMnexus/opencv26-lumen/releases/latest/download/lumen-samples.zip" rel="noopener">test data pack</a> (44&nbsp;MB), so you can run them yourself.</p>
+      </section>
+      <div id="report" aria-live="polite"><p class="muted">Loading the report…</p></div>
+
+      <section class="report-block" aria-labelledby="runs-title">
+        <h2 id="runs-title">Your runs on this device</h2>
+        <p class="muted">Jobs you processed in this browser. Kept only here, in local storage; nothing about them is sent anywhere.</p>
+        <div id="runs"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="colophon">
+    <dl class="title-block title-block-foot">
+      <div><dt>Entry</dt><dd>OpenCV AI Competition 2026</dd></div>
+      <div><dt>Storage</dt><dd>S3, photos deleted after 7 days</dd></div>
+      <div class="wide"><dt>Real test photos</dt><dd>Empa HDR Image Database (P. Zolliker, I. Sprow) and the Cambridge deghosting stacks (K. Karađuzović-Hadžiabdić, J. Hasić Telalović, R. K. Mantiuk), both CC BY 4.0</dd></div>
+    </dl>
+  </footer>
+
+  <template id="compare-template">
+    <div class="compare">
+      <img class="compare-before" alt="" decoding="async">
+      <img class="compare-after" alt="" decoding="async">
+      <span class="cut cut-top" aria-hidden="true">A</span>
+      <span class="cut cut-bottom" aria-hidden="true">A</span>
+      <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Drag the cut line to compare before and after">
+      <span class="compare-tag compare-tag-before">Before</span>
+      <span class="compare-tag compare-tag-after">After</span>
+    </div>
+  </template>
+
+  <template id="set-template">
+    <article class="set sheet">
+      <header class="set-head">
+        <h3 class="set-title"></h3>
+        <span class="chip set-status"></span>
+        <p class="set-reason"></p>
+      </header>
+      <div class="set-body">
+        <div class="set-visual">
+          <div class="compare-slot"></div>
+          <p class="set-frames"></p>
+          <div class="review" hidden></div>
+          <p class="set-links"><a class="download btn" download>Download full resolution</a></p>
+        </div>
+        <aside class="set-side">
+          <dl class="metrics"></dl>
+          <h4 class="trace-title">Revisions: what the agent decided</h4>
+          <ol class="trace"></ol>
+        </aside>
+      </div>
+    </article>
+  </template>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

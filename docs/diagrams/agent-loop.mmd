@@ -1,0 +1,27 @@
+flowchart LR
+  see["SEE<br/>OpenCV 5 QC numbers<br/>residual px · ECC cc · ghost %<br/>clip % · curvature px · tilt °"]
+  decide{"DECIDE<br/>first rule that fires"}
+
+  see --> decide
+
+  decide -->|"one frame residual ∞"| drop["drop frame · realign"]
+  decide -->|"every frame ∞"| swap["swap reference · realign"]
+  decide -->|"window clipped"| pull["pull window from dark frame"]
+  pull -->|"not better"| revert["revert"] --> debevec["Debevec radiance merge"]
+  decide -->|"lines bent"| lens["lens self-calibration"]
+  decide -->|"verticals lean"| tilt["upright verticals"]
+  decide -->|"> 15 % moves · < 2 frames · keystone too strong"| person(["ASK A PERSON<br/>needs_review + reason"])
+
+  drop & swap & pull & debevec & lens & tilt --> again(["ACT done · measure again"])
+  again --> see
+
+  classDef seeNode fill:#fbf9f4,stroke:#17140f,stroke-width:1.5px,color:#17140f
+  classDef decideNode fill:#17140f,stroke:#f6c56a,stroke-width:2px,color:#f6c56a
+  classDef actNode fill:#f6ecd8,stroke:#b06d0c,stroke-width:1.5px,color:#17140f
+  classDef revertNode fill:#f3efe6,stroke:#6b6f77,stroke-width:1.5px,color:#17140f
+  classDef personNode fill:#fbf9f4,stroke:#b8361f,stroke-width:2px,color:#b8361f
+  class see seeNode
+  class decide decideNode
+  class drop,swap,pull,debevec,lens,tilt actNode
+  class revert,again revertNode
+  class person personNode

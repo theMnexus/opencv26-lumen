@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Data and outputs (own photos stay local)
+data/
+out/
+bench/out/
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.arw
+*.cr2
+*.cr3
+*.nef
+*.dng
+*.heic
+!docs/**/*.png
+!docs/**/*.jpg
+
+# Secrets
+.env
+.env.*
+*.pem
+*KEY*
+*key*.txt
+*secret*
+*session*.json
+.aws/
+samconfig.toml
+
+# AWS SAM
+.aws-sam/
+
+# OS
+.DS_Store
+
+# impeccable design workspace (notes, screenshots)
+.impeccable/
+
+# Local working notes (planning, drafts, scripts, design notes) stay out of the public repo
+PRODUCT.md
+DESIGN.md
+docs/BRIEF.md
+docs/PLAN.md
+docs/BUILD-LOG.md
+docs/DEVPOST.md
+docs/VIDEO.md
+docs/README.md
+src/lumen/web/img/*.json
+# screenshots of the previous web UI
+docs/screenshots/ui-desktop-*.png
+docs/screenshots/ui-mobile-set.png
+docs/screenshots/ui-review-*.png
+docs/screenshots/ui-hero.png
+docs/screenshots/ui-measurements.png
+docs/screenshots/ui-room-result.png

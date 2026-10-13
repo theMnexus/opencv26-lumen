@@ -1,0 +1,558 @@
+{
+ "hero": {
+  "frames": [
+   {
+    "src": "/static/img/hero-ev0.webp",
+    "ev": -3.0,
+    "shutter_s": 0.016666666666666666
+   },
+   {
+    "src": "/static/img/hero-ev1.webp",
+    "ev": -1.0,
+    "shutter_s": 0.06666666666666667
+   },
+   {
+    "src": "/static/img/hero-ev2.webp",
+    "ev": 0.0,
+    "shutter_s": 0.125
+   },
+   {
+    "src": "/static/img/hero-ev3.webp",
+    "ev": 1.0,
+    "shutter_s": 0.25
+   },
+   {
+    "src": "/static/img/hero-ev4.webp",
+    "ev": 3.0,
+    "shutter_s": 1.0
+   }
+  ],
+  "scene": "FORTH3",
+  "plumb": [
+   [
+    0.8012,
+    0.0009,
+    0.8019,
+    0.7179
+   ],
+   [
+    0.7915,
+    0.6785,
+    0.7903,
+    0.0009
+   ],
+   [
+    0.671,
+    0.0009,
+    0.6695,
+    0.6653
+   ],
+   [
+    0.1157,
+    0.0009,
+    0.1173,
+    0.6541
+   ],
+   [
+    0.7713,
+    0.6447,
+    0.7713,
+    0.153
+   ],
+   [
+    0.2327,
+    0.4364,
+    0.2324,
+    0.0009
+   ],
+   [
+    0.6471,
+    0.6241,
+    0.6485,
+    0.2524
+   ],
+   [
+    0.5496,
+    0.2524,
+    0.5499,
+    0.5922
+   ],
+   [
+    0.1212,
+    0.2937,
+    0.1213,
+    0.0009
+   ],
+   [
+    0.8095,
+    0.3313,
+    0.8088,
+    0.0422
+   ],
+   [
+    0.4662,
+    0.2506,
+    0.4662,
+    0.5208
+   ],
+   [
+    0.8124,
+    0.2843,
+    0.8126,
+    0.549
+   ],
+   [
+    0.8097,
+    0.5846,
+    0.8103,
+    0.3444
+   ],
+   [
+    0.8109,
+    0.0009,
+    0.8118,
+    0.2393
+   ],
+   [
+    0.5704,
+    0.3538,
+    0.5705,
+    0.5865
+   ],
+   [
+    0.5535,
+    0.5434,
+    0.5537,
+    0.3181
+   ]
+  ]
+ },
+ "gallery": {
+  "empa": [
+   {
+    "scene": "FORTH3",
+    "status": "ok",
+    "frames": 7,
+    "size": [
+     1600,
+     1065
+    ],
+    "before": "/static/img/real-FORTH3-before.webp",
+    "after": "/static/img/real-FORTH3-after.webp",
+    "tilt_before_deg": 3.58,
+    "tilt_after_deg": 0.21,
+    "ghost": 0.0006,
+    "clip": 0.0114,
+    "steps": [
+     {
+      "tool": "align_set",
+      "decision": "accept"
+     },
+     {
+      "tool": "merge_set",
+      "decision": "accept"
+     },
+     {
+      "tool": "pull_windows",
+      "decision": "skip"
+     },
+     {
+      "tool": "correct_lens",
+      "decision": "skip"
+     },
+     {
+      "tool": "straighten",
+      "decision": "accept"
+     },
+     {
+      "tool": "none",
+      "decision": "done"
+     }
+    ],
+    "window": null
+   },
+   {
+    "scene": "FORTH4",
+    "status": "ok",
+    "frames": 7,
+    "size": [
+     1600,
+     1065
+    ],
+    "before": "/static/img/real-FORTH4-before.webp",
+    "after": "/static/img/real-FORTH4-after.webp",
+    "tilt_before_deg": 5.55,
+    "tilt_after_deg": 0.42,
+    "ghost": 0.0006,
+    "clip": 0.0299,
+    "steps": [
+     {
+      "tool": "align_set",
+      "decision": "accept"
+     },
+     {
+      "tool": "merge_set",
+      "decision": "accept"
+     },
+     {
+      "tool": "pull_windows",
+      "decision": "skip"
+     },
+     {
+      "tool": "correct_lens",
+      "decision": "skip"
+     },
+     {
+      "tool": "straighten",
+      "decision": "accept"
+     },
+     {
+      "tool": "none",
+      "decision": "done"
+     }
+    ],
+    "window": {
+     "before": "/static/img/real-FORTH4-win-before.webp",
+     "after": "/static/img/real-FORTH4-win-after.webp",
+     "blown_before": 0.1412,
+     "blown_after": 0.0637
+    }
+   },
+   {
+    "scene": "Museum1",
+    "status": "ok",
+    "frames": 7,
+    "size": [
+     1600,
+     1074
+    ],
+    "before": "/static/img/real-Museum1-before.webp",
+    "after": "/static/img/real-Museum1-after.webp",
+    "tilt_before_deg": 0.52,
+    "tilt_after_deg": 0.13,
+    "ghost": 0.0,
+    "clip": 0.0,
+    "steps": [
+     {
+      "tool": "align_set",
+      "decision": "accept"
+     },
+     {
+      "tool": "merge_set",
+      "decision": "accept"
+     },
+     {
+      "tool": "correct_lens",
+      "decision": "skip"
+     },
+     {
+      "tool": "straighten",
+      "decision": "accept"
+     },
+     {
+      "tool": "none",
+      "decision": "done"
+     }
+    ],
+    "window": null
+   }
+  ],
+  "ghost": [
+   {
+    "scene": "occlusion-1",
+    "category": "occlusion",
+    "size": [
+     1200,
+     800
+    ],
+    "off": "/static/img/ghost-occlusion-1-off.webp",
+    "on": "/static/img/ghost-occlusion-1-on.webp",
+    "flagged": 0.1218,
+    "psnr_off": 23.49,
+    "psnr_on": 36.79,
+    "agent": "ok",
+    "agent_reason": ""
+   },
+   {
+    "scene": "lolm-4",
+    "category": "lolm",
+    "size": [
+     1200,
+     800
+    ],
+    "off": "/static/img/ghost-lolm-4-off.webp",
+    "on": "/static/img/ghost-lolm-4-on.webp",
+    "flagged": 0.0624,
+    "psnr_off": 27.01,
+    "psnr_on": 37.23,
+    "agent": "ok",
+    "agent_reason": ""
+   },
+   {
+    "scene": "solm-1",
+    "category": "solm",
+    "size": [
+     1200,
+     800
+    ],
+    "off": "/static/img/ghost-solm-1-off.webp",
+    "on": "/static/img/ghost-solm-1-on.webp",
+    "flagged": 0.0083,
+    "psnr_off": 36.98,
+    "psnr_on": 46.39,
+    "agent": "ok",
+    "agent_reason": ""
+   },
+   {
+    "scene": "multiview-1",
+    "category": "multiview",
+    "size": [
+     1200,
+     800
+    ],
+    "off": "/static/img/ghost-multiview-1-off.webp",
+    "on": "/static/img/ghost-multiview-1-on.webp",
+    "flagged": 0.5426,
+    "psnr_off": 17.33,
+    "psnr_on": 29.49,
+    "agent": "needs_review",
+    "agent_reason": "no frame lines up with the reference"
+   }
+  ]
+ },
+ "ghost": {
+  "scenes": 36,
+  "psnr_off": 29.41,
+  "psnr_on": 34.8,
+  "ssim_off": 0.923,
+  "ssim_on": 0.963,
+  "better": 28,
+  "same": 7,
+  "worse": 1,
+  "agent_ok": 27,
+  "categories": [
+   {
+    "name": "complex",
+    "scenes": 4,
+    "psnr_off": 20.88,
+    "psnr_on": 30.37,
+    "flagged": 0.222
+   },
+   {
+    "name": "handheld",
+    "scenes": 4,
+    "psnr_off": 31.55,
+    "psnr_on": 34.09,
+    "flagged": 0.053
+   },
+   {
+    "name": "lolm",
+    "scenes": 4,
+    "psnr_off": 23.21,
+    "psnr_on": 32.22,
+    "flagged": 0.106
+   },
+   {
+    "name": "losm",
+    "scenes": 4,
+    "psnr_off": 36.05,
+    "psnr_on": 36.68,
+    "flagged": 0.002
+   },
+   {
+    "name": "multiview",
+    "scenes": 4,
+    "psnr_off": 16.63,
+    "psnr_on": 23.95,
+    "flagged": 0.462
+   },
+   {
+    "name": "nrm",
+    "scenes": 4,
+    "psnr_off": 31.88,
+    "psnr_on": 35.62,
+    "flagged": 0.013
+   },
+   {
+    "name": "occlusion",
+    "scenes": 4,
+    "psnr_off": 24.52,
+    "psnr_on": 33.55,
+    "flagged": 0.084
+   },
+   {
+    "name": "solm",
+    "scenes": 4,
+    "psnr_off": 36.36,
+    "psnr_on": 43.09,
+    "flagged": 0.008
+   },
+   {
+    "name": "sosm",
+    "scenes": 4,
+    "psnr_off": 43.6,
+    "psnr_on": 43.6,
+    "flagged": 0.0
+   }
+  ]
+ },
+ "empa": [
+  {
+   "scene": "FORTH3",
+   "status": "ok",
+   "frames": 7,
+   "ghost": 0.0006,
+   "clip": 0.0114,
+   "tilt_before_deg": 3.58,
+   "tilt_after_deg": 0.21,
+   "lens": "skip"
+  },
+  {
+   "scene": "FORTH4",
+   "status": "ok",
+   "frames": 7,
+   "ghost": 0.0006,
+   "clip": 0.0299,
+   "tilt_before_deg": 5.55,
+   "tilt_after_deg": 0.42,
+   "lens": "skip"
+  },
+  {
+   "scene": "Museum1",
+   "status": "ok",
+   "frames": 7,
+   "ghost": 0.0,
+   "clip": 0.0,
+   "tilt_before_deg": 0.52,
+   "tilt_after_deg": 0.13,
+   "lens": "skip"
+  }
+ ],
+ "synthetic": [
+  {
+   "label": "Alignment error vs truth",
+   "unit": "px",
+   "clean": {
+    "mean": 0.069,
+    "worst": 0.2529,
+    "n": 24
+   },
+   "phone": {
+    "mean": 0.0848,
+    "worst": 0.2587,
+    "n": 24
+   }
+  },
+  {
+   "label": "Ghost pixels found",
+   "unit": "",
+   "clean": {
+    "mean": 0.8054,
+    "worst": 0.6866,
+    "n": 12
+   },
+   "phone": {
+    "mean": 0.8068,
+    "worst": 0.6909,
+    "n": 12
+   }
+  },
+  {
+   "label": "Static pixels flagged as ghost",
+   "unit": "",
+   "clean": {
+    "mean": 0.0,
+    "worst": 0.0003,
+    "n": 24
+   },
+   "phone": {
+    "mean": 0.0,
+    "worst": 0.0003,
+    "n": 24
+   }
+  },
+  {
+   "label": "Window still clipped after pull",
+   "unit": "",
+   "clean": {
+    "mean": 0.0009,
+    "worst": 0.0021,
+    "n": 24
+   },
+   "phone": {
+    "mean": 0.0153,
+    "worst": 0.0459,
+    "n": 24
+   }
+  },
+  {
+   "label": "Roll error",
+   "unit": "°",
+   "clean": {
+    "mean": 0.0388,
+    "worst": 0.1095,
+    "n": 24
+   },
+   "phone": {
+    "mean": 0.0397,
+    "worst": 0.1162,
+    "n": 24
+   }
+  },
+  {
+   "label": "Vertical tilt after",
+   "unit": "°",
+   "clean": {
+    "mean": 0.0332,
+    "worst": 0.1703,
+    "n": 24
+   },
+   "phone": {
+    "mean": 0.0322,
+    "worst": 0.1796,
+    "n": 24
+   }
+  },
+  {
+   "label": "Agent time per set (MacBook)",
+   "unit": "s",
+   "clean": {
+    "mean": 0.7575,
+    "worst": 1.4155,
+    "n": 24
+   },
+   "phone": {
+    "mean": 0.756,
+    "worst": 1.0108,
+    "n": 24
+   }
+  }
+ ],
+ "aws": [
+  {
+   "scene": "Empa FORTH3",
+   "frames": 7,
+   "megapixels": 16,
+   "lambda_s": 18.3,
+   "memory_mb": 1362,
+   "status": "done",
+   "gb_s": 53.8,
+   "usd": 0.00072
+  },
+  {
+   "scene": "Cambridge complex-1 (one bracket)",
+   "frames": 5,
+   "megapixels": 3.8,
+   "lambda_s": 12.9,
+   "memory_mb": 1009,
+   "status": "needs review: 16 % of the frame moves",
+   "gb_s": 37.9,
+   "usd": 0.00051
+  }
+ ],
+ "sources": {
+  "empa": "Empa HDR Image Database, P. Zolliker & I. Sprow, CC BY 4.0, doi:10.5281/zenodo.7861544",
+  "cambridge": "Multi-exposure stacks for testing HDR deghosting, Karaduzovic-Hadziabdic, Hasic Telalovic, Mantiuk, University of Cambridge, CC BY 4.0, doi:10.17863/CAM.6881"
+ },
+ "generated": "2026-10-13"
+}

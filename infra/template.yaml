@@ -1,0 +1,90 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: theMnexus Lumen - OpenCV 5 bracket agent on Lambda Graviton (arm64) + S3
+
+Parameters:
+  MemoryMB:
+    Type: Number
+    Default: 10240
+    Description: 24 MP x 5 frames peaked at 7.5 GB in local profiling (local profiling).
+  MaxConcurrency:
+    Type: Number
+    Default: 5
+    Description: Caps cost and abuse of the public demo URL. 0 = no reservation (accounts with a concurrency limit of 10 cannot reserve any).
+
+Conditions:
+  ReserveConcurrency: !Not [!Equals [!Ref MaxConcurrency, 0]]
+
+Resources:
+  PhotoBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-jobs
+            Status: Enabled
+            Prefix: jobs/
+            ExpirationInDays: 7
+      CorsConfiguration:
+        CorsRules:
+          - AllowedMethods: [POST, GET]
+            AllowedOrigins: ["*"]  # presigned POST/GET carry their own signature
+            AllowedHeaders: ["*"]
+            MaxAge: 3000
+
+  LumenFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${AWS::StackName}-lumen"
+      PackageType: Image
+      Architectures: [arm64]
+      MemorySize: !Ref MemoryMB
+      Timeout: 900
+      EphemeralStorage:
+        Size: 4096
+      ReservedConcurrentExecutions: !If [ReserveConcurrency, !Ref MaxConcurrency, !Ref AWS::NoValue]
+      LoggingConfig:
+        LogGroup: !Ref LumenLogs
+      Environment:
+        Variables:
+          LUMEN_STORAGE: s3
+          LUMEN_BUCKET: !Ref PhotoBucket
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref PhotoBucket
+        - Statement:
+            - Effect: Allow
+              Action: lambda:InvokeFunction  # async self-invoke for the worker
+              Resource: !Sub "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-lumen"
+      FunctionUrlConfig:
+        AuthType: NONE  # judges open the demo without an AWS account
+      EventInvokeConfig:
+        MaximumRetryAttempts: 0  # a worker killed by time/memory must not re-run the job; the API reports it failed
+    Metadata:
+      Dockerfile: infra/Dockerfile.arm64
+      DockerContext: ..
+      DockerTag: lumen-arm64
+
+  LumenLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${AWS::StackName}-lumen"
+      RetentionInDays: 14
+
+Outputs:
+  DemoUrl:
+    Description: Public web UI and API
+    Value: !GetAtt LumenFunctionUrl.FunctionUrl
+  Bucket:
+    Value: !Ref PhotoBucket
+  LogGroup:
+    Value: !Ref LumenLogs

@@ -1,0 +1,6 @@
+# Build context = repo root (infra/template.yaml DockerContext ..). Send only what the Dockerfile copies:
+# data/ (GB of test photos) and out/ made builds slow and broke one mid-copy.
+*
+!infra/requirements.txt
+!src/lumen/**
+**/__pycache__

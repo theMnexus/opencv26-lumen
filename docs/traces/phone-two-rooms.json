@@ -1,0 +1,57 @@
+{
+  "status": "needs_review",
+  "reason": "no frame lines up with the reference",
+  "frames": [
+    "set00_f1.jpg",
+    "set02_f1.jpg"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "rule": "need_alignment",
+      "tool": "align_set",
+      "observe": {
+        "frames": 2
+      },
+      "params": {
+        "reference": 1
+      },
+      "result": {
+        "worst_residual_px": "inf",
+        "frames": [
+          {
+            "frame": 0,
+            "method": "mtb",
+            "residual_px": "inf",
+            "note": "ecc cc 0.51 < 0.8: not the same scene; sift found too few matches; picked mtb"
+          },
+          {
+            "frame": 1,
+            "method": "reference",
+            "residual_px": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 2,
+      "rule": "bad_frame",
+      "tool": "drop_frame",
+      "observe": {
+        "frames": 2,
+        "worst_residual_px": "inf",
+        "residual_limit_px": 2.0
+      },
+      "params": {
+        "drop_frame": 0,
+        "residual_px": "inf"
+      },
+      "result": {
+        "frames_left": 1
+      },
+      "decision": "review"
+    }
+  ]
+}

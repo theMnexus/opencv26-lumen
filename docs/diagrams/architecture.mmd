@@ -1,0 +1,43 @@
+flowchart TB
+  user(["Owner / agent · folder of bracket photos"])
+
+  subgraph aws["AWS · Graviton arm64"]
+    direction LR
+    url["Lambda Function URL<br/>FastAPI API + web UI"]
+    worker["Lambda worker<br/>async invoke · no retry<br/>3008 MB · 15 min"]
+    s3[("Amazon S3<br/>private · AES-256<br/>7-day expiry")]
+    cw["CloudWatch Logs<br/>14 days"]
+    url -- "start" --> worker
+    worker <-->|"photos · results · job.json"| s3
+    worker --> cw
+  end
+
+  agent{{"Agent: see → decide → act<br/>reads residual px · ECC cc · ghost % · clip % · curvature px · tilt °<br/>fixed rule table · JSON trace · asks a person when unsure"}}
+
+  subgraph cv["OpenCV 5 tools"]
+    direction LR
+    g["Group<br/>Sobel · phaseCorrelate<br/>dct"]
+    a["Align<br/>AlignMTB →<br/>findTransformECCMultiScale<br/>SIFT + RANSAC"]
+    m["Merge + ghosts<br/>MergeMertens<br/>MergeDebevec + Drago<br/>absdiff · morphology"]
+    w["Window<br/>detail from<br/>the dark frame"]
+    l["Lens<br/>Canny · findContours<br/>undistortPoints · remap"]
+    t["Tilt<br/>LineSegmentDetector<br/>vanishing point<br/>warpPerspective"]
+    g --> a --> m --> w --> l --> t
+  end
+
+  user -- "presigned POST upload" --> s3
+  user -- "create job · poll" --> url
+  worker --> agent
+  agent -- "run one tool" --> cv
+  cv -- "QC numbers" --> agent
+
+  classDef awsNode fill:#f3efe6,stroke:#6b6f77,stroke-width:1.5px,color:#17140f
+  classDef cvNode fill:#fbf9f4,stroke:#b06d0c,stroke-width:1.5px,color:#17140f
+  classDef agentNode fill:#17140f,stroke:#f6c56a,stroke-width:2px,color:#f6c56a
+  classDef userNode fill:#fbf9f4,stroke:#17140f,stroke-width:1.5px,color:#17140f
+  class url,worker,s3,cw awsNode
+  class g,a,m,w,l,t cvNode
+  class agent agentNode
+  class user userNode
+  style aws fill:#e8e1d3,stroke:#6b6f77,stroke-width:1px,color:#17140f
+  style cv fill:#f6ecd8,stroke:#b06d0c,stroke-width:1px,color:#17140f

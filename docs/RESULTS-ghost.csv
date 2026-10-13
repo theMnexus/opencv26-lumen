@@ -1,0 +1,37 @@
+scene,category,frames,flagged,psnr_off,psnr_on,ssim_off,ssim_on,agent,agent_reason,seconds
+complex-1,complex,5,0.1506,21.42,32.68,0.867,0.9651,needs_review,15% of the frame moves,7.5
+complex-2,complex,5,0.222,21.64,27.98,0.8161,0.9184,needs_review,no frame lines up with the reference,15.1
+complex-3,complex,5,0.2376,19.12,26.9,0.8705,0.9293,ok,,9.7
+complex-4,complex,5,0.2787,21.33,33.93,0.8654,0.9838,needs_review,28% of the frame moves,9.2
+handheld-1,handheld,5,0.0006,31.1,31.22,0.9489,0.95,ok,,5.5
+handheld-2,handheld,5,0.0,42.5,42.5,0.9883,0.9883,ok,,5.8
+handheld-3,handheld,5,0.2001,19.6,28.38,0.8489,0.9289,needs_review,17% of the frame moves,11.2
+handheld-4,handheld,5,0.0126,33.02,34.25,0.9873,0.9883,ok,,5.0
+lolm-1,lolm,5,0.193,22.43,35.66,0.9102,0.9838,needs_review,19% of the frame moves,8.9
+lolm-2,lolm,5,0.0993,22.26,24.06,0.9505,0.9593,ok,,13.1
+lolm-3,lolm,5,0.0689,21.13,31.92,0.9347,0.9579,ok,,5.2
+lolm-4,lolm,5,0.0624,27.01,37.23,0.9555,0.9874,ok,,5.6
+losm-1,losm,5,0.0,37.68,37.68,0.9829,0.9829,ok,,4.3
+losm-2,losm,6,0.0,40.03,40.03,0.9895,0.9895,ok,,13.2
+losm-3,losm,5,0.001,33.33,33.54,0.9556,0.9567,ok,,4.0
+losm-4,losm,5,0.0086,33.16,35.48,0.977,0.9859,ok,,6.1
+multiview-1,multiview,5,0.5426,17.33,29.49,0.7561,0.9418,needs_review,no frame lines up with the reference,16.9
+multiview-2,multiview,5,0.316,16.9,21.07,0.7577,0.8655,ok,,21.2
+multiview-3,multiview,5,0.3963,17.92,25.13,0.7527,0.8544,needs_review,no frame lines up with the reference,13.8
+multiview-4,multiview,5,0.5913,14.37,20.12,0.6234,0.8591,needs_review,no frame lines up with the reference,18.9
+nrm-1,nrm,5,0.0142,30.84,37.9,0.9771,0.9854,ok,,6.1
+nrm-2,nrm,5,0.0143,31.87,35.08,0.947,0.9611,ok,,14.2
+nrm-3,nrm,5,0.0198,28.91,30.48,0.9022,0.9126,ok,,7.0
+nrm-4,nrm,5,0.0049,35.88,39.03,0.9878,0.9912,ok,,6.1
+occlusion-1,occlusion,5,0.1218,23.49,36.79,0.9344,0.9855,ok,,7.1
+occlusion-2,occlusion,5,0.0515,25.23,28.59,0.9377,0.961,ok,,11.8
+occlusion-3,occlusion,5,0.0394,23.9,32.38,0.9532,0.9714,ok,,5.2
+occlusion-4,occlusion,5,0.1245,25.44,36.45,0.947,0.9865,ok,,7.4
+solm-1,solm,5,0.0083,36.98,46.39,0.9894,0.9924,ok,,5.9
+solm-2,solm,5,0.0071,36.22,44.61,0.9867,0.9905,ok,,14.2
+solm-3,solm,5,0.0119,32.21,42.71,0.9855,0.9896,ok,,4.9
+solm-4,solm,5,0.0032,40.05,38.65,0.9909,0.9909,ok,,5.6
+sosm-1,sosm,5,0.0,45.59,45.59,0.9922,0.9922,ok,,4.3
+sosm-2,sosm,5,0.0,45.5,45.5,0.9901,0.9901,needs_review,keystone 1.78 > 0.35: needs review,12.5
+sosm-3,sosm,5,0.0,41.37,41.37,0.9859,0.9859,ok,,3.6
+sosm-4,sosm,5,0.0006,41.95,41.93,0.9941,0.9941,ok,,4.8

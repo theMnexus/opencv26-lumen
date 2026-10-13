@@ -1,0 +1,148 @@
+{
+  "status": "ok",
+  "reason": "",
+  "frames": [
+    "set01_f0.jpg",
+    "set01_f1.jpg",
+    "set01_f2.jpg"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "rule": "need_alignment",
+      "tool": "align_set",
+      "observe": {
+        "frames": 3
+      },
+      "params": {
+        "reference": 1
+      },
+      "result": {
+        "worst_residual_px": 0.1345,
+        "frames": [
+          {
+            "frame": 0,
+            "method": "ecc",
+            "residual_px": 0.1345,
+            "note": ""
+          },
+          {
+            "frame": 1,
+            "method": "reference",
+            "residual_px": 0.0,
+            "note": ""
+          },
+          {
+            "frame": 2,
+            "method": "ecc",
+            "residual_px": 0.109,
+            "note": ""
+          }
+        ]
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 2,
+      "rule": "need_merge",
+      "tool": "merge_set",
+      "observe": {
+        "frames": 3,
+        "worst_residual_px": 0.1345,
+        "residual_limit_px": 2.0
+      },
+      "params": {
+        "engine": "mertens",
+        "deghost": true
+      },
+      "result": {
+        "ghost_ratio": 0.0497,
+        "clip_ratio": 0.035,
+        "mef_ssim": 0.969
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 3,
+      "rule": "blown_window",
+      "tool": "pull_windows",
+      "observe": {
+        "frames": 3,
+        "worst_residual_px": 0.1345,
+        "residual_limit_px": 2.0,
+        "ghost_ratio": 0.0497,
+        "clip_ratio": 0.035
+      },
+      "params": {},
+      "result": {
+        "window_ratio": 0.0375,
+        "clip_before": 0.9372,
+        "clip_after": 0.0202,
+        "gain": 1.0,
+        "foreign_edges": 0.0,
+        "note": ""
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 4,
+      "rule": "lens",
+      "tool": "correct_lens",
+      "observe": {
+        "frames": 3,
+        "worst_residual_px": 0.1345,
+        "residual_limit_px": 2.0,
+        "ghost_ratio": 0.0497,
+        "clip_ratio": 0.0002
+      },
+      "params": {
+        "focal_px": 1200.0
+      },
+      "result": {
+        "k1": -0.122,
+        "curvature_before_px": 0.9872,
+        "curvature_after_px": 0.7702,
+        "pieces": 43,
+        "note": ""
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 5,
+      "rule": "tilt",
+      "tool": "straighten",
+      "observe": {
+        "frames": 3,
+        "worst_residual_px": 0.1345,
+        "residual_limit_px": 2.0,
+        "ghost_ratio": 0.0497,
+        "clip_ratio": 0.0001
+      },
+      "params": {},
+      "result": {
+        "roll_deg": -2.2063,
+        "keystone": 0.0007,
+        "tilt_before_deg": 2.2404,
+        "tilt_after_deg": 0.0371,
+        "zoom": 1.0572,
+        "note": ""
+      },
+      "decision": "accept"
+    },
+    {
+      "step": 6,
+      "rule": "finished",
+      "tool": "none",
+      "observe": {
+        "frames": 3,
+        "worst_residual_px": 0.1345,
+        "residual_limit_px": 2.0,
+        "ghost_ratio": 0.0497,
+        "clip_ratio": 0.0001
+      },
+      "params": {},
+      "result": {},
+      "decision": "done"
+    }
+  ]
+}

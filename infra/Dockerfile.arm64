@@ -1,0 +1,13 @@
+# theMnexus Lumen on AWS Lambda, Graviton (arm64).
+# Build:  docker build --platform linux/arm64 -f infra/Dockerfile.arm64 -t lumen:arm64 .
+# Local:  docker run --rm -p 9000:8080 -e LUMEN_STORAGE=local -e LUMEN_DATA_DIR=/tmp/store lumen:arm64
+FROM public.ecr.aws/lambda/python:3.12-arm64
+
+# Pinned with hashes, exported from uv.lock: uv export --no-dev --no-emit-project
+COPY infra/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir --require-hashes -r /tmp/requirements.txt \
+    && python -c "import cv2; assert cv2.__version__.startswith('5.'), cv2.__version__"
+
+COPY src/lumen ${LAMBDA_TASK_ROOT}/lumen
+
+CMD ["lumen.api.handler"]
