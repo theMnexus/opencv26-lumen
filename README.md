@@ -14,9 +14,43 @@ Lumen only corrects optics. It never adds or removes objects, so the photo still
 
 ## How it works
 
-![Architecture: OpenCV 5 tools driven by an agent on AWS Lambda Graviton](docs/diagrams/architecture.png)
+One job, step by step. The AWS box holds every cloud part; the OpenCV 5 work runs inside the Lambda worker, and each step's numbers decide the next one.
 
-Diagram sources: [`docs/diagrams/`](docs/diagrams/) (Mermaid `.mmd`, rendered to SVG and PNG).
+```mermaid
+sequenceDiagram
+    autonumber
+    actor P as Person
+    participant B as Browser<br/>web app
+    box AliceBlue AWS · Lambda arm64 (Graviton) · ap-southeast-2
+        participant API as Function URL<br/>Lambda · FastAPI
+        participant S3 as Amazon S3<br/>private · 7-day expiry
+        participant W as Lambda worker<br/>OpenCV 5 agent
+        participant CW as CloudWatch<br/>logs
+    end
+
+    P->>B: drop a folder of brackets (switch optional steps on or off)
+    B->>API: POST /api/jobs
+    API-->>B: one presigned upload link per photo
+    B->>S3: upload each photo directly
+    B->>API: POST /api/jobs/{id}/start
+    API-)W: async invoke (no retry)
+    W->>S3: read the photos
+    Note over W: OpenCV 5, one measured step at a time:<br/>group (phaseCorrelate) · align (multiscale ECC)<br/>merge (Mertens, ghost removal) · window fill<br/>lens k1 (plumb lines) · tilt (LSD vanishing point)<br/>each result decides: accept · revert · drop a frame · ask a person
+    W->>S3: images + trace (job.json)
+    W-)CW: logs
+    loop every 1.5 s until done
+        B->>API: GET /api/jobs/{id}
+        API-->>B: status, trace, result links
+    end
+    B->>S3: download full resolution (presigned)
+    opt the agent stopped (needs_review)
+        P->>B: accept, reject, or drop a frame
+        B->>API: POST /api/jobs/{id}/sets/{set}/review
+        API-->>B: decision stored as the first trace step (drop a frame: the room is re-run)
+    end
+```
+
+Static image: [`docs/diagrams/sequence.png`](docs/diagrams/sequence.png). Component view (OpenCV 5 tools and AWS services): [`docs/diagrams/architecture.png`](docs/diagrams/architecture.png). Sources: [`docs/diagrams/`](docs/diagrams/) (Mermaid `.mmd`, rendered to SVG and PNG).
 
 ![Web UI: a real room with the vertical edges OpenCV measured](docs/screenshots/ui-cover.png)
 

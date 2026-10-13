@@ -24,6 +24,12 @@ Generative "AI enhance" apps fix the look by repainting the room. For a listing 
 
 Source: [`diagrams/architecture.mmd`](diagrams/architecture.mmd).
 
+One job, step by step (every arrow is a real endpoint in `src/lumen/api.py`):
+
+![Sequence of one job: browser, Function URL, S3, Lambda worker running the OpenCV 5 agent, CloudWatch](diagrams/sequence.png)
+
+Source: [`diagrams/sequence.mmd`](diagrams/sequence.mmd).
+
 A job moves `uploading → queued → running → done | failed`. The API answers immediately; a second, asynchronous invocation does the work and writes `job.json`, which the browser polls. Locally the same code runs with a folder instead of S3 (`LUMEN_STORAGE=local`).
 
 ## 4. OpenCV 5: where the vision work happens
